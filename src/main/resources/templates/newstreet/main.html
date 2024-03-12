@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/index.js" defer></script>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Street People</title>
+</head>
+<body>
+    <div id="nav">
+        <h1 id="title"><a href="#">New Street People</a></h1>
+        <ul id="admin_list"></ul>
+            <li>
+                <a href="clothes/getClothes">옷 올리기(관리자용)</a>
+            </li>
+        <ul id="nav_list">
+            <li>New Release</li>
+            <li id="toggle">Hot Sale</li>
+            <li>Best 30</li>
+            <li>Top</li>
+            <li>Bottom</li>
+            <li>Outer</li>
+            <li>Hoodie & Zip Up</li>
+            <li>Others</li>
+        </ul>
+    </div>
+    <div class="img-grid"></div>
+    <script>
+        let img_grid = document.querySelector(".img-grid");
+        for(let i = 0; i<16; i++){
+            let div = document.createElement("div");
+            div.classList.add("row")
+            for(let j = 0; j<4; j++){
+                let img =document.createElement("img");
+                img.setAttribute("src","")
+                
+            }
+        }
+    </script>
+</body>
+</html>

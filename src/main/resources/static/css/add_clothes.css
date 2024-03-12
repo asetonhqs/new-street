@@ -1,0 +1,27 @@
+.color_list li{
+    list-style-type: none;
+    list-style: none;
+}
+.color_item{
+    position: relative;
+    float: left;
+    top:-8px;
+    right:45px;
+    margin-left: 5px;
+
+}
+#warn{
+    position: relative;
+    font-weight:bold;
+    left:50px;
+    font-size:13px;
+}
+#size_title{
+    position:relative;
+    right:40px;
+}
+#cloth_text{
+    resize: both;
+    width: 600px;
+    height: 300px;
+}

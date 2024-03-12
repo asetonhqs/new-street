@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSP : add clothes form</title>s
+    <link rel="stylesheet" href="css/add_clothes.css">
+</head>
+<body>
+    <script>
+                        function add_color(){
+                            let delete_button = document.createElement("button"); //임의의 버튼 요소생성
+                            let color_list = document.querySelector(".color_list"); // color_list 를 가져옴 <ul>
+                            let color =document.getElementById("cloth_colors"); // input 요소를 가져옴
+                            let color_item = document.createElement("li"); // li 요소 생성
+                            
+                            color_item.classList.add("color_item");
+                            color_item.textContent="ㅤ";
+                            color_item.style.backgroundColor=color.value; //생성한 li요소 의 색깔을 <input> 에서 선택한 컬러로 적용
+                            
+                            color_list.appendChild(color_item); // li 를 ul 의 하위 요소로 편입
+                            color.value = "#000000"; // <input> 태그의 color 를 초기화
+                            color_item.addEventListener("click",function(event){
+                                event.target.remove(); // li 를 클릭시 삭제되도록 변경
+                            })
+                            color_item.addEventListener("submit",function(event){
+                                event.target.textContent = target.backgroundColor; // 색깔을 텍스트 콘텐츠에 담아서 String 으로 색상을 전달할수있게
+                                event.target.name = "colors[]";  //생성한 색깔 li 들의 name을 color[] 로 배열로 전송할수있게함
+
+                            })      
+                            
+                        }
+                        function submit(){
+                            var formElements = document.getElementById("my_form"); // 폼 가져오기
+                            var formData = new FormData(); // 폼데이터 생성
+                            for(let i = 0; i< formElements.elements.length; i++){ // 여기서 formElments.elements 는 formElements의 하위요소중 name 을 가진 모든 요소를 가져옴
+                                if(formElements[i].type=='file' && formElements[i].name=='img[]'){ //file 배열이라도 타입은 file임
+                                    var img_files = formElements[i].files;
+                                    for(let j=0; j<img_files.length; j++){
+                                        formData.append('img[]',img_files[j].value);
+                                    }
+                                }
+                                else if(formElements[i].type=='file'){
+                                    formData.append('imgThumbnail', formElements[i].value);
+                                }
+                                else{
+                                    formData.append(formElements[i].name,formElements[i].value);
+                                }
+                            }
+                            fetch('clothes/post',{
+                                method: 'POST', //감싸야함
+                                body : formData,
+                                headers : {
+                                    "Content-Type" : "application/json" //제이슨 형태로 보내기
+                                }
+                                
+                            })
+                            
+                        }
+                        
+                    </script>
+    <form action="http://localhost:8080/clothes/post" method="post" accept-charset="utf-16" enctype="multipart/form-data" id="my_form">
+        <fieldset>
+            <legend>
+                옷 추가
+                <script>console.log("test");</script>
+            </legend>
+            <ul>
+                <li>
+                    <label for="cloth_name">옷 제목 : </label>
+                    <input type="text" id="cloth_name" name="clothName"><br></br>
+                <li>
+                    <label for="cloth_colors">옷 색깔 : </label><br></br>
+                    <input type="color" id="cloth_colors">
+                    <button onclick="add_color()" type="button">추가</button><span id="warn">* 색 상자를 클릭시 삭제가능. 우히힛! 화이팅 순빈찡!</span><br></br>
+                    <ul class="color_list"></ul><br></br>
+                </li>
+                <li>
+                    <ul name="cloth_sizes"> 
+                        <span id="size_title">옷 사이즈 선택 (복수선택)</span>
+                        <li>
+                            <label for="cloth_size"></label>
+                            <input type="checkbox"  value="XS" name="sizes[]">XS
+                        </li>
+                        <li>
+                            <label for="cloth_size"></label>
+                            <input type="checkbox" value="S" name="sizes[]">S
+                        </li>
+                        <li>
+                            <label for="cloth_size"></label>
+                            <input type="checkbox" value="M" name="sizes[]">M
+                        </li>
+                        <li>
+                            <label for="cloth_size"></label>
+                            <input type="checkbox"  value="L" name="sizes[]">L
+                        </li>
+                        <li>
+                            <label for="cloth_size"></label>
+                            <input type="checkbox"  value="XL" name="sizes[]">XL
+                        </li>
+                    </ul>
+                    
+                    
+                </li><br></br>
+                <li>
+                    <label for="cloth_price">옷가격 : </label>
+                    <input type="number" id="cloth_price" name="clothPrice"><span> 단위 : 원</span>
+                </li><br></br>
+                <li>
+                    <labe for="cloth_sale">할인금액 : </labe>
+                    <input value="0" type="number" id="clothSale"><span> 단위 : 원</span><span id="warn"> 할인 할 금액을 적어주세요. 5만 짜리 4만에 팔거면 1만 적으면댐. 아니면 0</span>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>상품설명</legend>
+            <textarea id="cloth_text" rows="10" cols="10" name="detailText"></textarea>
+            <span>상세 페이지에 적히는 내용입니다.</span>
+        </fieldset>
+        <fieldset>
+            <legend>사진 업로드</legend>
+            <label for="imgInput">썸네일 선택</label>
+            <input type="file" name="imgThumbnail" accept="image/*" id="thumbnailInput">
+            <label for="imgInput">이미지 선택</label>
+            <input type="file" name="img[]" accept="img/*" id="imgInput" multiple>
+        </fieldset>
+        <button onclick="submit()">옷 포스트하기</button>
+    </form>
+</body>
+</html> 
